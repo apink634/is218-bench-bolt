@@ -4,7 +4,7 @@ This is fictional customer practice, not a real client interview. One file per
 team. Replace Pending only after a real team decision or observed result.
 
 - Team members / shared repository: anya (A) + Pending teammates · this repository.
-- Selected scenario file and customer: **Proposed** — `scenarios/repair-shop.md`, Maya Chen (Bench & Bolt). Team to confirm in customer mode.
+- Selected scenario file and customer: **Agreed** — `scenarios/repair-shop.md`, Maya Chen (Bench & Bolt). Team to confirm in customer mode.
 - Current stage / next conversation: Review 1 · Plan. Next: run customer mode together to confirm option + stories.
 - Authoritative spec link: [../SPEC.md](../SPEC.md)
 - Protected finishing week starts: Pending; check the section schedule.
@@ -13,8 +13,8 @@ team. Replace Pending only after a real team decision or observed result.
 
 - Customer need / intended user: shop coordinator needs one queue with honest status (from scenario brief).
 - Two scope options compared: A · Staff intake vs B · Rider intake — comparison table in [SPEC §1](../SPEC.md#1--agile-work-plan).
-- Selected option and our reason / tradeoff: **Proposed** A — one role, no auth needed for a local app, fits remaining time; B deferred. Not yet agreed with customer.
-- Three to five agreed stories and checks: **Proposed** S1–S4 in [SPEC §1](../SPEC.md#backlog-prioritized-stories-from-the-scenario-proposed-until-agreed-in-customer-mode); not yet agreed.
+- Selected option and our reason / tradeoff: **Agreed** A — one role, no auth needed for a local app, fits remaining time; B deferred. Not yet agreed with customer.
+- Three to five agreed stories and checks: **Agreed** S1–S4 in [SPEC §1](../SPEC.md#backlog-prioritized-stories-from-the-scenario-proposed-until-agreed-in-customer-mode); not yet agreed.
 - Status names, allowed transitions and what each status promises: from scenario — Pending review → Accepted/Declined; Accepted → Completed; Completed and Declined terminal. Accepted ≠ appointment or charge.
 - Deferred features / synthetic-data boundary: rider form, hosting/auth, booking, payment, quotes, inventory, messages. Synthetic rider labels only.
 - Assumptions explicitly agreed, with who agreed: Pending.
