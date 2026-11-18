@@ -1,0 +1,38 @@
+[project]
+name = "benchbolt"
+version = "0.1.0"
+description = "Bench & Bolt repair inquiry queue (IS218 group customer project, simulated customer)"
+requires-python = ">=3.11"
+dependencies = ["flask>=3.0"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "pytest-cov", "ruff>=0.6", "mypy>=1.10", "bandit>=1.7", "pip-audit", "playwright"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+markers = ["e2e: slow browser tests (run before merge to main, not on every save)"]
+addopts = "-m 'not e2e'"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+# pycodestyle, pyflakes, isort, bugbear, pyupgrade, simplify, flake8-bandit
+select = ["E", "F", "I", "B", "UP", "SIM", "S"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101"]  # assert is fine in tests
+
+[tool.mypy]
+strict = true
+mypy_path = "src"
+packages = ["benchbolt"]
