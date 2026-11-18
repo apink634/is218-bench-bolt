@@ -54,9 +54,45 @@ The scenario's “Needs follow-up” flag is held until the customer introduces 
 | S3 | **Decision** — As the coordinator, I accept, decline and close (complete) a request so its status stays honest. | Pending → Accepted/Declined; Accepted → Completed. A direct request to complete a *Pending review* inquiry, or to change a Completed/Declined one, is rejected (409) and the stored record is unchanged. | Must |
 | S4 | **Completed** — As the coordinator, I see how many inquiries we've completed so I can measure output. | Queue shows a Completed count and a Completed-only filter. Count matches the stored records, updates after a status change and survives restart. No customer details stored. | Should |
 
-**Data / status rules** (from the scenario):
-`Pending review → Accepted | Declined`, `Accepted → Completed`; Completed and Declined are terminal.
-Accepted = shop agreed to take the job — not a reserved time or a charge.
+### Data rules, status rules, and workflow
+
+The coordinator records walk-in repair inquiries under Option A (staff intake).
+
+#### Data rules
+
+| Field | Rule |
+|---|---|
+| Inquiry ID | The app assigns a unique ID when the inquiry is saved. |
+| Rider label | Use a synthetic label only, such as Rider-001. |
+| Bike type | Required. Choose City, Road, or Other. |
+| Problem description | Required. Enter 1–240 characters. Whitespace-only input is invalid. |
+| Preferred repair day | Optional, up to 40 characters. Display it as an unconfirmed preference. |
+| Status | The app starts every new inquiry at **Pending review**. |
+| Created at | The app records the creation timestamp. |
+
+If input is invalid, show an error and save no record.
+
+#### Status rules
+
+| Current status | Allowed next status | Meaning |
+|---|---|---|
+| Pending review | Accepted or Declined | The inquiry is saved and waiting for a decision. |
+| Accepted | Completed | The shop has agreed to take the repair. The preferred day remains unconfirmed. |
+| Declined | None | The shop has decided to pass on the repair. |
+| Completed | None | The repair work is finished. |
+
+For an invalid status change, return HTTP 409 and leave the saved record unchanged.
+
+#### Small workflow
+
+1. A rider walks in with a flat rear tire on a road bike and says they prefer Friday.
+2. The coordinator enters the details with a synthetic rider label and saves the inquiry.
+3. The inquiry appears in the coordinator queue as **Pending review**, with Friday shown as an unconfirmed preference.
+4. Later, the coordinator accepts or declines the inquiry. If accepted, the coordinator marks it **Completed** after the repair is finished.
+
+**Review 2:** Demonstrate steps 1–3. Check that invalid input creates no record and that the saved inquiry still appears after the app restarts.
+
+**Review 3:** Demonstrate the status changes in step 4 and the Completed count and filter from S4.
 
 ### Milestones
 
