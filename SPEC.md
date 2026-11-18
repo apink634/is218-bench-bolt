@@ -244,6 +244,6 @@ CI: [`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs all of the above
 | --- | --- | --- | --- | --- |
 | 2026-11-17 | initial commit | `pytest` | 18 rule tests pass | **passed** (18) |
 | 2026-11-17 | initial commit | `ruff check . && ruff format --check . && mypy && bandit -q -r src` | clean | **passed** |
-| — | — | GitHub Actions CI | green on first push | **not run** (repo not pushed yet) |
-| — | — | integration / e2e | — | **not run** (no store or web layer yet) |
-| — | — | real peer review | — | **not run** |
+| 2026-11-17 | `4931adf` (PR #4) | GitHub Actions `checks` workflow: format, lint, types, security, tests | green | **passed** — [PR #4 checks](https://github.com/apink634/is218-bench-bolt/pull/4/checks) |
+| — | — | integration / e2e | — | **not run** (no store or web layer yet — due with the first slice) |
+| — | — | real classmate peer review | — | **not run** (Review 4); team cross-reviews so far: [#2](https://github.com/apink634/is218-bench-bolt/pull/2), [#3](https://github.com/apink634/is218-bench-bolt/pull/3) |
