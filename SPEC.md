@@ -11,7 +11,7 @@ Status labels used below: **Proposed** (someone suggested it) · **Agreed** (tea
 
 | Item | Value |
 | --- | --- |
-| Customer / scenario | Maya Chen, Bench & Bolt bike repair — [`scenarios/repair-shop.md`](customer-kit/scenarios/repair-shop.md) · *Proposed by anya, team to confirm* |
+| Customer / scenario | Maya Chen, Bench & Bolt bike repair — [`scenarios/repair-shop.md`](customer-kit/scenarios/repair-shop.md) · *Agreed by team — see [CUSTOMER-NOTES](customer-kit/CUSTOMER-NOTES.md)* |
 | Audience and main task | Shop coordinator turns scraps of paper into one queue with an honest status |
 | Promise (this term) | Coordinator records a walk-in inquiry, reviews it in a queue, moves it through allowed statuses; data survives restart |
 | Dream | Rider self-service intake with a clear receipt (Option B) once the staff flow is solid |
@@ -19,7 +19,7 @@ Status labels used below: **Proposed** (someone suggested it) · **Agreed** (tea
 | Stack | Python 3.12 · Flask · SQLite · pytest — *Proposed* (reasons in §2) |
 | Repository / setup | this repo · see [README](README.md) |
 | Current stage | **Review 1 · Plan.** Core rule module + unit tests exist; no web app or store yet |
-| Contributions | see §1 Team table; fill actual work per member as it happens |
+| Contributions | see §1 Team table |
 
 ---
 
@@ -43,14 +43,16 @@ The scenario's “Needs follow-up” flag is held until the customer introduces 
 | Effort / risk | Lower; fits the time left | Higher; auth is new work for the team |
 | **Proposed choice** | ✅ fits the term and still proves the full workflow | Deferred (the “Dream”) |
 
-### Backlog (prioritized; stories from the scenario, *Proposed until agreed in customer mode*)
+### Backlog
+
+**Agreed** by the team (see [CUSTOMER-NOTES](customer-kit/CUSTOMER-NOTES.md)). One user: the coordinator.
 
 | # | Story | Acceptance criteria (observable) | Priority |
 | --- | --- | --- | --- |
-| S1 | **Intake** — As the coordinator, I create a walk-in inquiry and get its ID marked *Pending review*. | Valid input → stored record with new ID + *Pending review*. Blank problem, bike type outside city/road/other, problem > 240 chars or preferred day > 40 chars → error shown, **no record created**. Preferred day never displayed as confirmed. | Must |
-| S2 | **Review** — As the coordinator, I see saved inquiries with their exact values in the queue. | Queue lists records in creation order with exact values. Restarting the app with the same DB shows the same records. | Must |
-| S3 | **Decision** — As the coordinator, I accept/decline pending inquiries and complete accepted ones. | Pending → Accepted/Declined; Accepted → Completed. Direct POST to complete a *Pending review* inquiry, or to change a Completed/Declined one, is rejected (409) and the stored record is unchanged. | Must |
-| S4 | **Handoff** — As the coordinator, I open one inquiry's detail and see the same status as the queue with a clear next step. | Detail and queue read the same stored status. Next-step text per status. No booking/payment wording anywhere. | Should |
+| S1 | **Intake** — As the coordinator, I create a repair inquiry so I can track upcoming work. | Valid input → stored record with new ID + *Pending review*. Blank problem, bike type outside city/road/other, problem > 240 chars or preferred day > 40 chars → error shown, **no record created**. Preferred day never displayed as confirmed. | Must |
+| S2 | **Queue** — As the coordinator, I see saved inquiries so the shop can work on them. | Queue lists records in creation order with exact values and status. Restarting the app with the same DB shows the same records. | Must |
+| S3 | **Decision** — As the coordinator, I accept, decline and close (complete) a request so its status stays honest. | Pending → Accepted/Declined; Accepted → Completed. A direct request to complete a *Pending review* inquiry, or to change a Completed/Declined one, is rejected (409) and the stored record is unchanged. | Must |
+| S4 | **Completed** — As the coordinator, I see how many inquiries we've completed so I can measure output. | Queue shows a Completed count and a Completed-only filter. Count matches the stored records, updates after a status change and survives restart. No customer details stored. | Should |
 
 **Data / status rules** (from the scenario):
 `Pending review → Accepted | Declined`, `Accepted → Completed`; Completed and Declined are terminal.
@@ -68,17 +70,17 @@ Accepted = shop agreed to take the job — not a reserved time or a charge.
 ### Team, ownership and cross-review
 
 Each member owns comparable **design + development + QA** work and reviews someone else's slice.
-Replace placeholders with real names/handles. Commit counts don't measure contribution — record what each person actually did.
+Commit counts don't measure contribution — record what each person actually did.
 
-| Member | Slice they own (design · dev · tests) | Cross-reviews |
-| --- | --- | --- |
-| **A · anya** | Intake: form layout + error messages · `validate_inquiry` + POST /inquiries · validation/boundary tests (S1) | B's transitions: tries a rejected transition and a terminal edit |
-| **B · _teammate_** | Queue + decisions: queue/detail layout · SQLite store + transition routes · store + restart + 409 tests (S2, S3) | A's intake: tries valid, missing and unsupported inputs |
-| **C · _teammate (if trio)_** | Detail/handoff: status copy + next-step text · detail view · e2e test (S4) | Reviews both A and B's PRs for wording (no booking/payment claims) |
-| **All** | Customer discovery, scope choice, integration early (M1), rotate owner/reviewer | |
+| Member | Slice 1 (Review 2) | Slice 2 (Review 3) | Cross-reviews |
+| --- | --- | --- | --- |
+| **1 · Anya** | **Intake form:** decide what the coordinator enters and how errors show · build form + submission route using `validate_inquiry` · test a valid submission and a blank problem (S1) | **Completed count + filter** in the queue; status wording with no booking/payment claims (S4) | **Shree's queue:** submit an inquiry, check its details and *Pending review* status display correctly |
+| **2 · Dhruvi** | **SQLite storage:** define what's saved · save/retrieve, assign ID, set initial status · test retrieval after restart (S2) | **Status rules in storage:** allowed changes saved, rejected change leaves record unchanged (S3) | **Anya's form:** invalid submission shows an error and creates no database row |
+| **3 · Shree** | **Coordinator queue:** decide what the coordinator sees · build queue page from Dhruvi's records · connect intake → queue · test submit-to-queue path (S2) | **Decision buttons:** Accept/Decline/Complete + end-to-end test (S3) | **Dhruvi's storage:** saved details and order preserved after restart |
+| **All** | Discover the need, compare options, agree stories; agree `Inquiry` fields + store functions (§2, §3) before coding | | Rotate owner/reviewer; record real findings in GitHub issues |
 
-**Dependencies.** `domain.py` (rules) → `store.py` (needs status enum) → routes → templates. A and B agree the
-`Inquiry` fields first (S1 ↔ S2 contract), then work in parallel.
+**Dependencies.** `domain.py` (rules) → `store.py` (needs status enum) → routes → templates. All three agree the
+`Inquiry` fields and store function names first (the form ↔ storage ↔ queue contract), then work in parallel.
 
 **Review process.** Every change goes through a PR; the cross-reviewer from the table approves; CI must be green.
 Findings from a real person go in a GitHub issue using the *Peer review finding* template.
@@ -159,10 +161,10 @@ Prediction to check at M1: AI will over-layer the store; we will reject layers w
 | --- | --- | --- | --- | --- |
 | Unit | Validation (normal, invalid, boundary 1/240/241, 0/40/41), every allowed + rejected transition | pytest | local on save + CI | ~20, < 1 s |
 | Integration | Store round-trip; **restart** = new store on same file sees same record; route returns 409 and DB unchanged on bad transition; invalid POST creates no row | pytest + Flask test client + temp SQLite | local + CI | ~8 |
-| End-to-end | One happy path city bike → Completed; one rejected action shown to user | Playwright (`pytest -m e2e`) | local before merging to main; CI later | 2 |
+| End-to-end | One happy path city bike → Completed (count goes up); one rejected action shown to user | Playwright (`pytest -m e2e`) | local before merging to main; CI later | 2 |
 
 **Story → test map:** S1 → unit validation + integration “invalid POST creates no row” · S2 → integration restart · S3 → unit transitions + integration 409 ·
-S4 → e2e queue/detail status match.
+S4 → integration: Completed count matches stored records after a status change and after restart.
 **Test data:** synthetic fixtures only (`Rider-001`, `city`, “Flat rear tire”). Each test gets its own temp DB (pytest `tmp_path`).
 **Why this mix:** rules are cheap to test exhaustively at the unit level, so e2e only covers the two paths the customer will watch; no duplication.
 
@@ -191,12 +193,12 @@ CI: [`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs all of the above
 
 ## 6 · Build and review sequence
 
-1. **First slice (M1):** `store.py` + `POST /inquiries` + queue page → one stored inquiry reaches the queue; restart check. (A: intake, B: store/queue, integrate in the same week.)
-2. Decision routes + 409 handling (S3), then detail view (S4).
+1. **First slice (M1):** `store.py` + `POST /inquiries` + queue page → one stored inquiry reaches the queue; restart check. (Anya: intake, Dhruvi: storage, Shree: queue — integrate in the same week.)
+2. Decision routes + 409 handling (S3), then the Completed count/filter (S4).
 3. Ask the simulated customer for the one bounded change; implement or defer with a reason.
 4. Real classmate tries a task without coaching → issue → change → retest.
 
-**Open questions** (also Pending in CUSTOMER-NOTES): Does the coordinator need to edit an inquiry's text after creation? Sort queue by status or by creation order only? Duo or trio split?
+**Open questions** (also Pending in CUSTOMER-NOTES): Does the coordinator need to edit an inquiry's text after creation? Sort queue by status or by creation order only?
 
 **How feedback updates the plan:** each review finding becomes an issue; if it changes scope, update the backlog table above and CUSTOMER-NOTES in the same PR.
 

@@ -3,30 +3,28 @@
 This is fictional customer practice, not a real client interview. One file per
 team. Replace Pending only after a real team decision or observed result.
 
-- Team members / shared repository: anya (A) + Pending teammates · this repository.
-- Selected scenario file and customer: **Agreed** — `scenarios/repair-shop.md`, Maya Chen (Bench & Bolt). Team to confirm in customer mode.
-- Current stage / next conversation: Review 1 · Plan. Next: run customer mode together to confirm option + stories.
+- Team members / shared repository: Anya, Dhruvi, Shree · this repository.
+- Selected scenario file and customer: **Agreed** — `scenarios/repair-shop.md`, Maya Chen (Bench & Bolt).
+- Current stage / next conversation: Review 1 · Plan done. Next conversation: the one bounded change, after our first slice works.
 - Authoritative spec link: [../SPEC.md](../SPEC.md)
 - Protected finishing week starts: Pending; check the section schedule.
 
 ## Discovery and scope
 
-- Customer need / intended user: shop coordinator needs one queue with honest status (from scenario brief).
+- Customer need / intended user: the shop coordinator needs one queue with an honest status for each repair inquiry.
 - Two scope options compared: A · Staff intake vs B · Rider intake — comparison table in [SPEC §1](../SPEC.md#1--agile-work-plan).
-- **Customer** — Bench & Bolt.
-- **Selected option (Agreed)** — A · Staff intake.
-- **Why we chose Bench & Bolt** — This is a realistic problem for many businesses, especially when they’re just starting out. Staff intake gives us a practical way to help a shop track its orders and customers.
-- **Agreed user stories**
-  - As a store owner, I want to track completed orders so I can measure output and how many customers we’ve served.
-  - As a shop coordinator, I want to create a repair inquiry so I can track upcoming work.
-  - As a repairman, I want to see the inquiry so I can work on it.
-  - As a repairman, I want to close a request so I can track completed orders.
+- Selected option: **Agreed** — A · Staff intake. B (rider form) is deferred.
+- Why we chose Bench & Bolt and Option A (team's words): This is a realistic problem for many businesses, especially when they're just starting out. Staff intake gives us a practical way to help a shop track its orders.
+- Agreed user stories (**Agreed**; one user — the coordinator; acceptance checks in [SPEC §1 Backlog](../SPEC.md#backlog)):
+  - **S1 · Intake** — As the coordinator, I want to create a repair inquiry so I can track upcoming work.
+  - **S2 · Queue** — As the coordinator, I want to see saved inquiries so the shop can work on them.
+  - **S3 · Decision** — As the coordinator, I want to accept, decline and close (complete) a request so its status stays honest.
+  - **S4 · Completed** — As the coordinator, I want to see how many inquiries we've completed so I can measure the shop's output.
 - Status names, allowed transitions and what each status promises: from scenario — Pending review → Accepted/Declined; Accepted → Completed; Completed and Declined terminal. Accepted ≠ appointment or charge.
-- Deferred features / synthetic-data boundary: rider form, hosting/auth, booking, payment, quotes, inventory, messages. Synthetic rider labels only.
-- **Team agreements and open questions** — We agreed on the project, its direction, why we chose it, and the user stories above. Technical details haven’t been discussed yet and are pending.
-- **Team responsibilities** — Ann owns the Intake Form, Dhruvi owns SQLite Storage, and Shree owns the Coordinator Queue.
-- Open questions: edit inquiry text after creation? queue sort order? (both Pending)
-- Design/development/QA owners and cross-reviewers: [SPEC §1 Team table](../SPEC.md#team-ownership-and-cross-review) — teammates Pending.
+- Deferred features / synthetic-data boundary: rider form, extra roles (owner/repairman views), hosting/auth, booking, payment, quotes, inventory, messages, customer contact details. Synthetic rider labels only.
+- Assumptions explicitly agreed, with who agreed: all stories use one role (the coordinator) — agreed by Anya, Dhruvi, Shree. "Track completed" means a count/filter of Completed inquiries, not customer records — agreed by Anya, Dhruvi, Shree.
+- Open questions: edit inquiry text after creation? queue sort order? Technical details not yet discussed (Pending).
+- Design/development/QA owners and cross-reviewers: Anya — intake form; Dhruvi — SQLite storage; Shree — coordinator queue. Full table and reviewers: [SPEC §1 Team table](../SPEC.md#team-ownership-and-cross-review).
 
 ## Change request: Not introduced
 
