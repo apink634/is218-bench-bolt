@@ -13,11 +13,18 @@ team. Replace Pending only after a real team decision or observed result.
 
 - Customer need / intended user: shop coordinator needs one queue with honest status (from scenario brief).
 - Two scope options compared: A · Staff intake vs B · Rider intake — comparison table in [SPEC §1](../SPEC.md#1--agile-work-plan).
-- Selected option and our reason / tradeoff: **Agreed** A — one role, no auth needed for a local app, fits remaining time; B deferred. Not yet agreed with customer.
-- Three to five agreed stories and checks: **Agreed** S1–S4 in [SPEC §1](../SPEC.md#backlog-prioritized-stories-from-the-scenario-proposed-until-agreed-in-customer-mode); not yet agreed.
+- **Customer** — Bench & Bolt.
+- **Selected option (Agreed)** — A · Staff intake.
+- **Why we chose Bench & Bolt** — This is a realistic problem for many businesses, especially when they’re just starting out. Staff intake gives us a practical way to help a shop track its orders and customers.
+- **Agreed user stories**
+  - As a store owner, I want to track completed orders so I can measure output and how many customers we’ve served.
+  - As a shop coordinator, I want to create a repair inquiry so I can track upcoming work.
+  - As a repairman, I want to see the inquiry so I can work on it.
+  - As a repairman, I want to close a request so I can track completed orders.
 - Status names, allowed transitions and what each status promises: from scenario — Pending review → Accepted/Declined; Accepted → Completed; Completed and Declined terminal. Accepted ≠ appointment or charge.
 - Deferred features / synthetic-data boundary: rider form, hosting/auth, booking, payment, quotes, inventory, messages. Synthetic rider labels only.
-- Assumptions explicitly agreed, with who agreed: Pending.
+- **Team agreements and open questions** — We agreed on the project, its direction, why we chose it, and the user stories above. Technical details haven’t been discussed yet and are pending.
+- **Team responsibilities** — Ann owns the Intake Form, Dhruvi owns SQLite Storage, and Shree owns the Coordinator Queue.
 - Open questions: edit inquiry text after creation? queue sort order? (both Pending)
 - Design/development/QA owners and cross-reviewers: [SPEC §1 Team table](../SPEC.md#team-ownership-and-cross-review) — teammates Pending.
 
